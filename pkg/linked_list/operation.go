@@ -27,12 +27,14 @@ func (rcv *LinkedList) AddAtTail(val string) error {
 	if rcv == nil {
 		return errors.New(message.Nil)
 	}
-	// ノードがない場合、先頭にノードを追加しても末尾にノードを追加しても結果は不変。
+	// NOTE: ノードがない場合、「次のノード」という概念が存在しない。
+	//  先頭にノードを追加しても末尾にノードを追加しても結果は不変。
 	if rcv.Head == nil {
 		_ = rcv.AddAtHead(val)
 		return nil
 	}
-	rcv.Tail().Next = &ListNode{
+	tail, _ := rcv.Tail()
+	tail.Next = &ListNode{
 		Val:  val,
 		Next: nil,
 	}
@@ -40,12 +42,24 @@ func (rcv *LinkedList) AddAtTail(val string) error {
 }
 
 // Tail はリストの末尾にあるノードを取得します。
-func (rcv *LinkedList) Tail() *ListNode {
+func (rcv *LinkedList) Tail() (*ListNode, error) {
+	if rcv == nil {
+		return nil, errors.New(message.Nil)
+	}
 	cur := rcv.Head
+	if cur == nil {
+		return nil, nil
+	}
+	index := 0
 	for cur.Next != nil {
+		index++
 		cur = cur.Next
 	}
-	return cur
+	// NOTE: for 文についての C1 カバレッジを測定するため。
+	if index == 0 {
+		// for 文の中に入らなかった
+	}
+	return cur, nil
 }
 
 // DeleteAtHead はリストの先頭にあるノードを削除します。
@@ -82,13 +96,19 @@ func (rcv *LinkedList) MidCut() (newLst *LinkedList, err error) {
 	}
 	cur := rcv.Head
 	newLst = GetEmptyLinkedList()
+	count := 0
 	for cur != nil {
+		count++
 		_ = newLst.AddAtHead(rcv.Head.Val)
 		if cur.Next == nil {
 			break
 		}
 		cur = cur.Next.Next
 		_ = rcv.DeleteAtHead()
+	}
+	// NOTE: for 文についての C1 カバレッジを測定するため。
+	if count == 0 {
+		// for 文の中に入らなかった
 	}
 	return newLst, nil
 }
@@ -104,12 +124,18 @@ func (rcv *LinkedList) IsEqualTo(tgt *LinkedList) (ret bool, err error) {
 	if rcv == nil || tgt == nil {
 		return false, errors.New(message.Nil)
 	}
+	count := 0
 	for rcv.Head != nil && tgt.Head != nil {
+		count++
 		if rcv.Head.Val != tgt.Head.Val {
 			return false, nil
 		}
 		_ = rcv.DeleteAtHead()
 		_ = tgt.DeleteAtHead()
+	}
+	// NOTE: for 文についての C1 カバレッジを測定するため。
+	if count == 0 {
+		// for 文の中に入らなかった
 	}
 	if rcv.Head == nil && tgt.Head == nil {
 		return true, nil
