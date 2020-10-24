@@ -1,9 +1,9 @@
 package linked_list
 
-func ConvertWordToLinkedList(word Word) *linkedList {
-	lst := getEmptyLinkedList()
+func ConvertWordToLinkedList(word Word) *LinkedList {
+	lst := GetEmptyLinkedList()
 	for _, c := range word {
-		_ = lst.addAtTail(string(c))
+		_ = lst.AddAtTail(string(c))
 	}
 	return lst
 }

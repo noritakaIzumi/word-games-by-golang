@@ -1,12 +1,12 @@
 package linked_list
 
-type linkedList struct {
-	head *listNode
+type LinkedList struct {
+	Head *ListNode
 }
 
-type listNode struct {
-	val  string
-	next *listNode
+type ListNode struct {
+	Val  string
+	Next *ListNode
 }
 
 type Word string
