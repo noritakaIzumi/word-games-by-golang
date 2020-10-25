@@ -290,3 +290,32 @@ func TestLinkedList_Tail(t *testing.T) {
 		})
 	}
 }
+
+func TestLinkedList_シナリオ(t *testing.T) {
+	t.Run("Scenario 1.", func(t *testing.T) {
+		rcv := &linked_list.LinkedList{
+			Head: nil,
+		}
+		_ = rcv.AddAtTail("a")
+		_ = rcv.AddAtHead("b")
+		_ = rcv.AddAtTail("c")
+		_, _ = rcv.MidCut()
+		_ = rcv.AddAtHead("d")
+		_ = rcv.AddAtTail("e")
+		_, _ = rcv.MidCut()
+		_ = rcv.AddAtTail("あ")
+		_ = rcv.DeleteAtHead()
+		wantRcv := &linked_list.LinkedList{
+			Head: &linked_list.ListNode{
+				Val: "e",
+				Next: &linked_list.ListNode{
+					Val:  "あ",
+					Next: nil,
+				},
+			},
+		}
+		if !reflect.DeepEqual(rcv, wantRcv) {
+			t.Errorf("AddAtHead 3 times: rcv = %v, wantRcv %v", rcv, wantRcv)
+		}
+	})
+}
