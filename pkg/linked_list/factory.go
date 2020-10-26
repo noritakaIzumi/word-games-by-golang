@@ -1,5 +1,5 @@
 package linked_list
 
-func getEmptyLinkedList() *linkedList {
-	return &linkedList{head: nil}
+func GetEmptyLinkedList() *LinkedList {
+	return &LinkedList{Head: nil}
 }

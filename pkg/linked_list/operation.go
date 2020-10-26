@@ -6,62 +6,76 @@ import (
 	"word_games/pkg/message"
 )
 
-// addAtHead はリストの先頭にノードを追加します。
+// AddAtHead はリストの先頭にノードを追加します。
 //
 // リストが nil の場合、エラーを返します。
-func (rcv *linkedList) addAtHead(val string) error {
+func (rcv *LinkedList) AddAtHead(val string) error {
 	if rcv == nil {
 		return errors.New(message.Nil)
 	}
-	rcv.head = &listNode{
-		val:  val,
-		next: rcv.head,
+	rcv.Head = &ListNode{
+		Val:  val,
+		Next: rcv.Head,
 	}
 	return nil
 }
 
-// addAtTail はリストの末尾にノードを追加します。
+// AddAtTail はリストの末尾にノードを追加します。
 //
 // リストが nil の場合、エラーを返します。
-func (rcv *linkedList) addAtTail(val string) error {
+func (rcv *LinkedList) AddAtTail(val string) error {
 	if rcv == nil {
 		return errors.New(message.Nil)
 	}
-	// ノードがない場合、先頭にノードを追加しても末尾にノードを追加しても結果は不変。
-	if rcv.head == nil {
-		_ = rcv.addAtHead(val)
+	// NOTE: ノードがない場合、「次のノード」という概念が存在しない。
+	//  先頭にノードを追加しても末尾にノードを追加しても結果は不変。
+	if rcv.Head == nil {
+		_ = rcv.AddAtHead(val)
 		return nil
 	}
-	rcv.tail().next = &listNode{
-		val:  val,
-		next: nil,
+	tail, _ := rcv.Tail()
+	tail.Next = &ListNode{
+		Val:  val,
+		Next: nil,
 	}
 	return nil
 }
 
-// tail はリストの末尾にあるノードを取得します。
-func (rcv *linkedList) tail() *listNode {
-	cur := rcv.head
-	for cur.next != nil {
-		cur = cur.next
+// Tail はリストの末尾にあるノードを取得します。
+func (rcv *LinkedList) Tail() (*ListNode, error) {
+	if rcv == nil {
+		return nil, errors.New(message.Nil)
 	}
-	return cur
+	cur := rcv.Head
+	if cur == nil {
+		return nil, nil
+	}
+	index := 0
+	for cur.Next != nil {
+		index++
+		cur = cur.Next
+	}
+	// NOTE: for 文についての C1 カバレッジを測定するため。
+	if index == 0 {
+		// for 文の中に入らなかった
+	}
+	return cur, nil
 }
 
-// deleteAtHead はリストの先頭にあるノードを削除します。
+// DeleteAtHead はリストの先頭にあるノードを削除します。
 //
 // リストにノードがない場合、何もしません。
 // リストが nil の場合、エラーを返します。
-func (rcv *linkedList) deleteAtHead() error {
+func (rcv *LinkedList) DeleteAtHead() error {
 	if rcv == nil {
 		return errors.New(message.Nil)
 	}
-	if rcv.head == nil {
+	if rcv.Head == nil {
 		// 何もしない
-	} else if rcv.head.next == nil {
-		rcv.head = nil
+	} else if rcv.Head.Next == nil {
+		rcv.Head = nil
 	} else {
-		rcv.head = rcv.head.next
+		rcv.Head = rcv.Head.Next
 	}
 	return nil
 }
@@ -76,19 +90,25 @@ func (rcv *linkedList) deleteAtHead() error {
 // x というリストを切ると x と x という 2 つのリストに分かれます。
 //
 // リストにノードがない場合、エラーを返します。
-func (rcv *linkedList) MidCut() (newLst *linkedList, err error) {
+func (rcv *LinkedList) MidCut() (newLst *LinkedList, err error) {
 	if rcv == nil {
 		return nil, errors.New(message.Nil)
 	}
-	cur := rcv.head
-	newLst = getEmptyLinkedList()
+	cur := rcv.Head
+	newLst = GetEmptyLinkedList()
+	count := 0
 	for cur != nil {
-		_ = newLst.addAtHead(rcv.head.val)
-		if cur.next == nil {
+		count++
+		_ = newLst.AddAtHead(rcv.Head.Val)
+		if cur.Next == nil {
 			break
 		}
-		cur = cur.next.next
-		_ = rcv.deleteAtHead()
+		cur = cur.Next.Next
+		_ = rcv.DeleteAtHead()
+	}
+	// NOTE: for 文についての C1 カバレッジを測定するため。
+	if count == 0 {
+		// for 文の中に入らなかった
 	}
 	return newLst, nil
 }
@@ -100,18 +120,24 @@ func (rcv *linkedList) MidCut() (newLst *linkedList, err error) {
 // ノードがない 2 つのリストは一致しているとみなされます。
 //
 // 一方のノードが nil の場合、エラーを返します。
-func (rcv *linkedList) IsEqualTo(tgt *linkedList) (ret bool, err error) {
+func (rcv *LinkedList) IsEqualTo(tgt *LinkedList) (ret bool, err error) {
 	if rcv == nil || tgt == nil {
 		return false, errors.New(message.Nil)
 	}
-	for rcv.head != nil && tgt.head != nil {
-		if rcv.head.val != tgt.head.val {
+	count := 0
+	for rcv.Head != nil && tgt.Head != nil {
+		count++
+		if rcv.Head.Val != tgt.Head.Val {
 			return false, nil
 		}
-		_ = rcv.deleteAtHead()
-		_ = tgt.deleteAtHead()
+		_ = rcv.DeleteAtHead()
+		_ = tgt.DeleteAtHead()
 	}
-	if rcv.head == nil && tgt.head == nil {
+	// NOTE: for 文についての C1 カバレッジを測定するため。
+	if count == 0 {
+		// for 文の中に入らなかった
+	}
+	if rcv.Head == nil && tgt.Head == nil {
 		return true, nil
 	}
 	return false, nil
