@@ -47,6 +47,7 @@ func TestWord_IsPalindrome(t *testing.T) {
 		{name: "odd chars: true case.", rcv: linked_list.Word("level"), wantRet: true},
 		{name: "even chars: false case.", rcv: linked_list.Word("palindrome"), wantRet: false},
 		{name: "even chars: true case.", rcv: linked_list.Word("noon"), wantRet: true},
+		{name: "マルチバイト文字。", rcv: linked_list.Word("トマト"), wantRet: true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

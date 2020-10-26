@@ -19,7 +19,7 @@ func TestLinkedList_AddAtHead(t *testing.T) {
 		args    args
 		wantErr bool
 	}{
-		// NOTE: ノードの順番判定は別のメソッドでテストする
+		// NOTE: ノードの順番は「レシーバの中身をチェックするテスト」で確かめる
 		// {name: "nil receiver causes error.", fields: nil, args: args{val: "a"}, wantErr: true},
 		{name: "empty node.", fields: fields{Head: nil}, args: args{val: "a"}, wantErr: false},
 		{name: "some nodes.", fields: fields{Head: &linked_list.ListNode{
@@ -52,7 +52,7 @@ func TestLinkedList_AddAtTail(t *testing.T) {
 		args    args
 		wantErr bool
 	}{
-		// NOTE: ノードの順番は別のメソッドでテストする
+		// NOTE: ノードの順番は「レシーバの中身をチェックするテスト」で確かめる
 		// {name: "nil receiver causes error.", fields: nil, args: args{val: "a"}, wantErr: true},
 		{name: "empty node.", fields: fields{Head: nil}, args: args{val: "a"}, wantErr: false},
 		{name: "some nodes.", fields: fields{Head: &linked_list.ListNode{
@@ -84,7 +84,7 @@ func TestLinkedList_DeleteAtHead(t *testing.T) {
 		fields  fields
 		wantErr bool
 	}{
-		// NOTE: ノードの順番は別のメソッドでテストする
+		// NOTE: ノードの順番は「レシーバの中身をチェックするテスト」で確かめる
 		// {name: "nil receiver causes error.", fields: nil, wantErr: true},
 		{name: "empty node.", fields: fields{Head: nil}, wantErr: false},
 		{name: "1 node.", fields: fields{Head: &linked_list.ListNode{
@@ -187,7 +187,7 @@ func TestLinkedList_MidCut(t *testing.T) {
 		wantNewLst *linked_list.LinkedList
 		wantErr    bool
 	}{
-		// NOTE: レシーバー側のノードの順番は別のメソッドでテストする
+		// NOTE: レシーバー側のノードの順番は「レシーバの中身をチェックするテスト」で確かめる
 		// {name: "nil receiver causes error.", fields: nil, wantErr: true},
 		{name: "no node.", fields: fields{Head: nil}, wantNewLst: &linked_list.LinkedList{Head: nil}, wantErr: false},
 		{name: "1 node.", fields: fields{Head: &linked_list.ListNode{
@@ -291,8 +291,11 @@ func TestLinkedList_Tail(t *testing.T) {
 	}
 }
 
-func TestLinkedList_シナリオ(t *testing.T) {
-	t.Run("Scenario 1.", func(t *testing.T) {
+// ここからレシーバの中身をチェックするテスト
+
+func TestLinkedList_receiverが正しいLinkedListを持っているかどうか(t *testing.T) {
+	name := "Receiver has collect list."
+	t.Run(name, func(t *testing.T) {
 		rcv := &linked_list.LinkedList{
 			Head: nil,
 		}
@@ -303,19 +306,19 @@ func TestLinkedList_シナリオ(t *testing.T) {
 		_ = rcv.AddAtHead("d")
 		_ = rcv.AddAtTail("e")
 		_, _ = rcv.MidCut()
-		_ = rcv.AddAtTail("あ")
+		_ = rcv.AddAtTail("f")
 		_ = rcv.DeleteAtHead()
 		wantRcv := &linked_list.LinkedList{
 			Head: &linked_list.ListNode{
 				Val: "e",
 				Next: &linked_list.ListNode{
-					Val:  "あ",
+					Val:  "f",
 					Next: nil,
 				},
 			},
 		}
 		if !reflect.DeepEqual(rcv, wantRcv) {
-			t.Errorf("AddAtHead 3 times: rcv = %v, wantRcv %v", rcv, wantRcv)
+			t.Errorf("%s: rcv = %v, wantRcv %v", name, rcv, wantRcv)
 		}
 	})
 }
