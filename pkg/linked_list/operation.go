@@ -9,7 +9,7 @@ import (
 // AddAtHead はリストの先頭にノードを追加します。
 //
 // リストが nil の場合、エラーを返します。
-func (rcv *LinkedList) AddAtHead(val string) error {
+func (rcv *LinkedList) AddAtHead(val Char) error {
 	if rcv == nil {
 		return errors.New(message.Nil)
 	}
@@ -23,7 +23,7 @@ func (rcv *LinkedList) AddAtHead(val string) error {
 // AddAtTail はリストの末尾にノードを追加します。
 //
 // リストが nil の場合、エラーを返します。
-func (rcv *LinkedList) AddAtTail(val string) error {
+func (rcv *LinkedList) AddAtTail(val Char) error {
 	if rcv == nil {
 		return errors.New(message.Nil)
 	}

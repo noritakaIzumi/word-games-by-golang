@@ -11,7 +11,7 @@ func TestLinkedList_AddAtHead(t *testing.T) {
 		Head *linked_list.ListNode
 	}
 	type args struct {
-		val string
+		val linked_list.Char
 	}
 	tests := []struct {
 		name    string
@@ -44,7 +44,7 @@ func TestLinkedList_AddAtTail(t *testing.T) {
 		Head *linked_list.ListNode
 	}
 	type args struct {
-		val string
+		val linked_list.Char
 	}
 	tests := []struct {
 		name    string

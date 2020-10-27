@@ -3,7 +3,7 @@ package linked_list
 func ConvertWordToLinkedList(word Word) *LinkedList {
 	lst := GetEmptyLinkedList()
 	for _, c := range word {
-		_ = lst.AddAtTail(string(c))
+		_ = lst.AddAtTail(Char(c))
 	}
 	return lst
 }
