@@ -5,8 +5,9 @@ type LinkedList struct {
 }
 
 type ListNode struct {
-	Val  string
+	Val  Char
 	Next *ListNode
 }
 
 type Word string
+type Char = Word
