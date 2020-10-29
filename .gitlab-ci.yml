@@ -1,0 +1,25 @@
+image: golang:1.15
+
+variables:
+  REPO_NAME: word_games
+
+before_script:
+  - mkdir -p $GOPATH/src/$(dirname $REPO_NAME)
+  - ln -svf $CI_PROJECT_DIR $GOPATH/src/$REPO_NAME
+  - cd $GOPATH/src/$REPO_NAME
+
+stages:
+  - format
+  - test
+
+format-project:
+  stage: format
+  script:
+    - go fmt ./...
+    - go vet ./...
+
+test-project:
+  stage: test
+  script:
+    - go test -race -coverpkg=./pkg/... ./test/...
+  coverage: '/coverage: \d+\.\d+% of statements/'
