@@ -1,2 +1,6 @@
 # Editor settings.
 .idea
+
+# Coverage files.
+coverage.html
+coverage.out
