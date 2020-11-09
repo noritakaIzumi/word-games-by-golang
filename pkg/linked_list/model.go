@@ -8,11 +8,11 @@ func ConvertWordToLinkedList(word Word) *LinkedList {
 	return lst
 }
 
-func ConvertLinkedListToWord(lst *LinkedList) *Word {
+func ConvertLinkedListToWord(list *LinkedList) *Word {
 	w := ""
-	cur := lst.Head
+	cur := list.Head
 	for cur != nil {
-		w += string(lst.Head.Val)
+		w += string(cur.Val)
 		cur = cur.Next
 	}
 	result := Word(w)
@@ -26,6 +26,34 @@ func (rcv *Word) IsPalindrome() (ret bool) {
 	return ret
 }
 
-func GetCommonEnding(w1 *Word, w2 *Word) *Word {
-	return nil
+func GetCommonEnding(word1 *Word, word2 *Word) *Word {
+	count := 0
+	w1 := ConvertWordToLinkedList(*word1)
+	w2 := ConvertWordToLinkedList(*word2)
+	cur1 := w1.Head
+	cur2 := w2.Head
+	for count < 2 {
+		if cur1.Next != nil {
+			cur1 = cur1.Next
+		} else {
+			cur1 = w2.Head
+			count++
+		}
+		if cur2.Next != nil {
+			cur2 = cur2.Next
+		} else {
+			cur2 = w1.Head
+			count++
+		}
+	}
+	ce := cur1
+	for cur1 != nil && cur2 != nil {
+		if cur1.Val != cur2.Val {
+			ce = cur1.Next
+		}
+		cur1 = cur1.Next
+		cur2 = cur2.Next
+	}
+	result := ConvertLinkedListToWord(&LinkedList{Head: ce})
+	return result
 }
