@@ -9,7 +9,14 @@ func ConvertWordToLinkedList(word Word) *LinkedList {
 }
 
 func ConvertLinkedListToWord(lst *LinkedList) *Word {
-	return nil
+	w := ""
+	cur := lst.Head
+	for cur != nil {
+		w += string(lst.Head.Val)
+		cur = cur.Next
+	}
+	result := Word(w)
+	return &result
 }
 
 func (rcv *Word) IsPalindrome() (ret bool) {
