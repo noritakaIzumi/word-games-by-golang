@@ -50,13 +50,13 @@ func (rcv *LinkedList) IsEqualTo(tgt *LinkedList) (ret bool, err error) {
 	return false, nil
 }
 
-func ConvertLinkedListToWord(list *LinkedList) (*Word, error) {
+func ConvertLinkedListToWord(list *LinkedList) (Word, error) {
 	if list == nil {
-		return nil, errors.New(message.Nil)
+		return "", errors.New(message.Nil)
 	}
 	if list.Head == nil {
 		result := Word("")
-		return &result, nil
+		return result, nil
 	}
 
 	w := ""
@@ -66,17 +66,17 @@ func ConvertLinkedListToWord(list *LinkedList) (*Word, error) {
 		cur = cur.Next
 	}
 	result := Word(w)
-	return &result, nil
+	return result, nil
 }
 
-func GetCommonEnding(word1 *Word, word2 *Word) *Word {
-	if word1 == nil || word2 == nil {
+func GetCommonEnding(word1 Word, word2 Word) Word {
+	if word1 == "" || word2 == "" {
 		word, _ := ConvertLinkedListToWord(&LinkedList{Head: nil})
 		return word
 	}
 	count := 0
-	w1 := ConvertWordToLinkedList(*word1)
-	w2 := ConvertWordToLinkedList(*word2)
+	w1 := ConvertWordToLinkedList(word1)
+	w2 := ConvertWordToLinkedList(word2)
 	cur1 := w1.Head
 	cur2 := w2.Head
 	for count < 2 {
