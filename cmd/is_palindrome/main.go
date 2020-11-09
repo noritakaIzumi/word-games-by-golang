@@ -1,4 +1,4 @@
-package main
+package is_palindrome
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 	"word_games/pkg/message"
 )
 
-func main() {
+func Main() {
 	word := io.GetInput(message.PleaseEnterSomeWord)
 
 	result := message.Empty
