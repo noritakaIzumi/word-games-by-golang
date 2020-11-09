@@ -79,6 +79,7 @@ func GetCommonEnding(word1 Word, word2 Word) Word {
 	w2 := ConvertWordToLinkedList(word2)
 	cur1 := w1.Head
 	cur2 := w2.Head
+	// 必ず通る while 句
 	for count < 2 {
 		if cur1.Next != nil {
 			cur1 = cur1.Next
@@ -94,6 +95,7 @@ func GetCommonEnding(word1 Word, word2 Word) Word {
 		}
 	}
 	ce := cur1
+	// 必ず通る while 句
 	for cur1 != nil && cur2 != nil {
 		if cur1.Val != cur2.Val {
 			ce = cur1.Next
