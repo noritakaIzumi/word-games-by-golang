@@ -13,6 +13,10 @@ func ConvertWordToLinkedList(word Word) *LinkedList {
 	return lst
 }
 
+func ConvertLinkedListToWord(lst *LinkedList) *Word {
+	return nil
+}
+
 func (rcv *Word) IsPalindrome() (ret bool) {
 	lst1 := ConvertWordToLinkedList(*rcv)
 	lst2, _ := lst1.MidCut()
